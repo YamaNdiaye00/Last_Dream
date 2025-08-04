@@ -1,4 +1,15 @@
+# Python cache
 __pycache__/
-.venv/
 *.pyc
-.idea/
+
+# Virtual environment
+.venv/
+
+# PyInstaller output
+build/
+dist/
+*.spec
+
+# Other
+*.log
+.idea

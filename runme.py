@@ -1,10 +1,22 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import messagebox
+
 from PIL import Image, ImageTk
 
+from cls.player_classes import Warrior, Mage, Rogue
 from game import Game
 from narrative import Narrative
-from cls.player_classes import Warrior, Mage, Rogue
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource for dev and PyInstaller """
+    try:
+        base_path = sys._MEIPASS  # Temporary folder for PyInstaller
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
 class RPGGUI:
@@ -16,7 +28,6 @@ class RPGGUI:
         self.player_name = tk.StringVar()
         self.current_enemy = None
         self.is_boss_fight = False
-
         self.intro_screen()
 
     # ---------- INTRO SCREEN ----------
@@ -45,9 +56,9 @@ class RPGGUI:
                  font=("Arial", 16)).pack(pady=10)
 
         # Load images
-        warrior_img = Image.open("assets/enemies/player/warrior.png").resize((150, 150))
-        mage_img = Image.open("assets/enemies/player/mage.png").resize((150, 150))
-        rogue_img = Image.open("assets/enemies/player/rogue.png").resize((150, 150))
+        warrior_img = Image.open(resource_path("assets/enemies/player/warrior.png")).resize((150, 150))
+        mage_img = Image.open(resource_path("assets/enemies/player/mage.png")).resize((150, 150))
+        rogue_img = Image.open(resource_path("assets/enemies/player/rogue.png")).resize((150, 150))
 
         self.warrior_photo = ImageTk.PhotoImage(warrior_img)
         self.mage_photo = ImageTk.PhotoImage(mage_img)
@@ -120,14 +131,14 @@ class RPGGUI:
 
         # --- Image mapping ---
         enemy_images = {
-            "Mancubus": "assets/enemies/minion/mancubus.png",
-            "Caragor": "assets/enemies/minion/caragor.png",
-            "Nazgul": "assets/enemies/minion/nazgul.png"
+            "Mancubus": resource_path("assets/enemies/minion/mancubus.png"),
+            "Caragor": resource_path("assets/enemies/minion/caragor.png"),
+            "Nazgul": resource_path("assets/enemies/minion/nazgul.png")
         }
         boss_images = {
-            "Mancubus": "assets/enemies/boss/boss_mancubus.png",
-            "Caragor": "assets/enemies/boss/boss_caragor.png",
-            "Nazgul": "assets/enemies/boss/boss_nazgul.png"
+            "Mancubus": resource_path("assets/enemies/boss/boss_mancubus.png"),
+            "Caragor": resource_path("assets/enemies/boss/boss_caragor.png"),
+            "Nazgul": resource_path("assets/enemies/boss/boss_nazgul.png")
         }
 
         img_path = boss_images[self.game.first_enemy_choice] if is_boss \
@@ -319,4 +330,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = RPGGUI(root)
     root.mainloop()
-

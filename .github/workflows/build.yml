@@ -1,0 +1,59 @@
+name: Build and Release Last Dream
+
+on:
+  push:
+    tags:
+      - 'v*'  # Runs when a version tag (vX.X.X) is pushed
+
+jobs:
+  build:
+    name: Build Executable
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --noconsole ^
+            --add-data "texts;texts" ^
+            --add-data "assets;assets" ^
+            runme.py
+        shell: cmd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: LastDream-exe
+          path: dist/runme.exe
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: LastDream-exe
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: runme.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
