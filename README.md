@@ -38,7 +38,7 @@ python runme.py
 ```
 
 ### 💻 Windows Executable (Optional)
-Download the prebuilt `.exe` from [Releases](https://github.com/YamaNdiaye00/LastDream/releases) and double-click to play without Python.
+Download the prebuilt `.exe` from [Releases](https://github.com/YamaNdiaye00/Last_Dream/releases) and double-click to play without Python.
 
 ---
 
