@@ -41,7 +41,7 @@ class RPGGUI:
     # ---------- START SCREEN ----------
     def start_screen(self):
         self.clear_screen()
-        tk.Label(self.root, text="Welcome to the Python RPG",
+        tk.Label(self.root, text="Last Dream - GOTY Edition",
                  font=("Times New Roman", 24)).pack(pady=20)
 
         tk.Label(self.root, text="Enter your character's name:",
