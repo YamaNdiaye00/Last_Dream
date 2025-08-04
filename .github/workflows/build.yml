@@ -2,8 +2,13 @@ name: Build and Release Last Dream
 
 on:
   push:
+    branches:
+      - master
     tags:
-      - 'v*'  # Runs when a version tag (vX.X.X) is pushed
+      - 'v*'   # Also triggers on version tags
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -28,6 +33,7 @@ jobs:
       - name: Build executable
         run: |
           pyinstaller --onefile --noconsole ^
+            --name "LastDream" ^
             --add-data "texts;texts" ^
             --add-data "assets;assets" ^
             runme.py
@@ -37,12 +43,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: LastDream-exe
-          path: dist/runme.exe
+          path: dist/LastDream.exe
 
   release:
     name: Create GitHub Release
     needs: build
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
 
     steps:
       - name: Download artifact
@@ -54,6 +61,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: runme.exe
+          files: LastDream.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
